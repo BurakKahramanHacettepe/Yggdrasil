@@ -8,13 +8,18 @@ public class ProjectileScript : MonoBehaviour
     public float range = 10f;
     public float speed = 10f;
     public bool direction = true;
-    public float damage = 34f;
+    public float dmg = 34f;
     public float y;
 
     private Vector2 target;
     private Vector2 position;
+
+    private GameControllerScript gameController;
+
+    
     void Start()
     {
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerScript>();
         position = gameObject.transform.position;
 
         if (direction)
@@ -41,6 +46,20 @@ public class ProjectileScript : MonoBehaviour
         if(Vector2.Distance(transform.position, target)< 0.1f)
         {
             Destroy(gameObject);
+        }
+    }
+    void OnCollisionEnter2D(Collision2D col)
+    {
+
+        if (col.gameObject.tag.Equals("Enemy"))
+        {
+            bool isDead = col.gameObject.GetComponent<EnemyScript>().Hurt(dmg);
+            if (isDead)
+            {
+                gameController.kill_count += 1;
+            }
+            Debug.Log(col.gameObject.GetComponent<EnemyScript>().hp);
+
         }
     }
 }

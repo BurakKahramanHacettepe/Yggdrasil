@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
@@ -10,12 +10,30 @@ public class EnemyScript : MonoBehaviour
     public bool Moving = false;
     public bool Attacking = false;
     public float speed = 0.8f;
+    public float hp = 100f;
     // Start is called before the first frame update
     private bool m_FacingRight = true;
     private RaycastHit2D hit;
     private GameObject cam;
     private GameObject melee;
 
+    public bool Hurt(float dmg)
+    {
+        hp -= dmg;
+        
+        animator.SetFloat("Hp", hp);
+        animator.SetTrigger("Hurt");
+
+        if (hp <= 0)
+        {
+            Destroy(gameObject);
+            Debug.Log("Öldüm");
+            return true;
+            //GetComponent<BoxCollider2D>().enabled = false;
+            //melee.GetComponent<CircleCollider2D>().enabled = false;
+        }
+        return false;
+    }
     void Start()
     {
         melee = transform.GetChild(1).gameObject;

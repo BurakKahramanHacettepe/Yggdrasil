@@ -15,4 +15,13 @@ public class LevelFinishScript : MonoBehaviour
     {
         
     }
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag.Equals("Player"))
+        {
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerScript>().Finish();
+            col.gameObject.GetComponent<PlayerMovementScript>().enabled = false;
+        }
+    }
+    
 }

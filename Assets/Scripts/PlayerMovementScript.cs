@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.UIElements;
+//using UnityEditor.UIElements;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
@@ -17,6 +18,7 @@ public class PlayerMovementScript : MonoBehaviour
     bool jump = false;
     bool melee = false;
     bool ranged = false;
+    
     // Update is called once per frame
     void Update()
     {
@@ -40,20 +42,24 @@ public class PlayerMovementScript : MonoBehaviour
 
         }
 
-
+       
 
     }
 
-   public void Hurt(float dmg)
+    
+
+    public void Hurt(float dmg)
     {
         hp -= dmg;
-        if (hp<0)
-        {
-            GetComponent<BoxCollider2D>().enabled = false;
-        }
+        
         animator.SetFloat("Hp", hp);
         animator.SetTrigger("Hurt");
 
+        if (hp <= 0)
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+            GetComponentInChildren<CircleCollider2D>().enabled = false;
+        }
     }
 
     void FixedUpdate()
