@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Collider
+  - EnemyPain
+  - PlayerPain
+  - PostFX
   layers:
   - Default
   - TransparentFX
@@ -16,7 +19,7 @@ TagManager:
   - 
   - 
   - Player
-  - 
+  - PostProcessing
   - 
   - 
   - 

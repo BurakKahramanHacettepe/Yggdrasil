@@ -15,6 +15,7 @@ public class CharacterController2D : MonoBehaviour
 
 	public GameObject projectile;
 
+
 	const float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 
@@ -71,6 +72,12 @@ public class CharacterController2D : MonoBehaviour
 		//only control the player if grounded or airControl is turned on
 		if (m_Grounded || m_AirControl)
 		{
+			if (m_Rigidbody2D.velocity.x > 0.1f)
+			{
+			
+				//GetComponents<AudioSource>()[2].Play(); //Footsteps
+
+			}
 
 			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 
@@ -113,12 +120,14 @@ public class CharacterController2D : MonoBehaviour
 		GameObject p = Instantiate(projectile, gameObject.transform.position + offset, Quaternion.identity);
 		p.GetComponent<ProjectileScript>().y = gameObject.transform.position.y;
 		p.GetComponent<ProjectileScript>().direction = m_FacingRight;
+		GetComponent<PlayerEssentials>().cd = 0.0f;
 
 	}
 
 	private void Melee()
 	{
-		Debug.Log("Melee");
+		GetComponent<PlayerEssentials>().melee_cd = 0.0f;
+		GetComponent<AudioSource>().Play();
 	}
 
 	private void Flip()

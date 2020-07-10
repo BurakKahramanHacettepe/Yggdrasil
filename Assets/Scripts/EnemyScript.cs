@@ -11,6 +11,8 @@ public class EnemyScript : MonoBehaviour
     public bool Attacking = false;
     public float speed = 0.8f;
     public float hp = 100f;
+
+    public float RayRange = 1.0f;
     // Start is called before the first frame update
     private bool m_FacingRight = true;
     private RaycastHit2D hit;
@@ -19,6 +21,11 @@ public class EnemyScript : MonoBehaviour
 
     public bool Hurt(float dmg)
     {
+        GameObject.FindGameObjectWithTag("EnemyPain").GetComponent<AudioSource>().Play();
+        if ((Moving | Attacking))//When Hit Flip Enemy
+        {
+            //Flip();
+        }
         hp -= dmg;
         
         animator.SetFloat("Hp", hp);
@@ -27,7 +34,6 @@ public class EnemyScript : MonoBehaviour
         if (hp <= 0)
         {
             Destroy(gameObject);
-            Debug.Log("Öldüm");
             return true;
             //GetComponent<BoxCollider2D>().enabled = false;
             //melee.GetComponent<CircleCollider2D>().enabled = false;
@@ -38,33 +44,34 @@ public class EnemyScript : MonoBehaviour
     {
         melee = transform.GetChild(1).gameObject;
         melee.SetActive(false);
-
+        foreach (var item in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            Physics2D.IgnoreCollision(item.GetComponent<BoxCollider2D>(), GetComponent<BoxCollider2D>());
+        } 
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         Physics2D.IgnoreCollision(cam.GetComponentInChildren<BoxCollider2D>(), GetComponent<BoxCollider2D>());
         StartCoroutine("Guard");
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void Update()
     {
         Vector3 direction = m_FacingRight ? Vector3.right : Vector3.left;
- 
-        hit = Physics2D.Raycast(transform.position- 0.1f *direction, direction);
+
+        hit = Physics2D.Raycast(transform.position - 0.1f * direction, direction);
         Debug.DrawRay(transform.position - 0.1f * direction, direction, Color.green);
         if ((hit.collider != null) && (hit.collider.gameObject.tag.Equals("Player")))
         {
-            if (hit.distance <= 1.0f)
+            if (hit.distance <= RayRange)
             {
                 Moving = true;
                 animator.SetBool("Moving", true);
+                gameObject.transform.Find("Alert").gameObject.SetActive(true);
             }
-          
+
         }
-       
-    }
-    private void Update()
-    {
-        if (Vector2.Distance(transform.position, cam.transform.position)>3.0f )
+
+        if (transform.position.x < cam.transform.position.x-2.0f )
         {
             Destroy(gameObject);
         }
@@ -87,18 +94,23 @@ public class EnemyScript : MonoBehaviour
             animator.SetBool("Moving", false);
             animator.SetBool("Attacking", false);
             Moving = false;
+            gameObject.transform.Find("Alert").gameObject.SetActive(false);
+
         }
     }
-
+    private void Flip()
+    {
+        m_FacingRight = !m_FacingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
     IEnumerator Guard()
     {
-        while (!Moving)
+        while (!(Moving | Attacking))
         {
-            m_FacingRight = !m_FacingRight;
-            Vector3 theScale = transform.localScale;
-            theScale.x *= -1;
-            transform.localScale = theScale;
-            yield return new WaitForSeconds(3f);
+            Flip();
+            yield return new WaitForSeconds(2f);
         }
         
         

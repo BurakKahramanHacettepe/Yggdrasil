@@ -20,6 +20,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3066408197512184678, guid: 318aa1e37b99c6348a4f5e07d6759a40,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6bea5a7d077841b4f8a1e0aed40b9d5e, type: 3}
+    - target: {fileID: 3066408197512184678, guid: 318aa1e37b99c6348a4f5e07d6759a40,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5957807632821544747, guid: 318aa1e37b99c6348a4f5e07d6759a40,
         type: 3}
       propertyPath: m_Enabled
@@ -33,7 +43,7 @@ PrefabInstance:
     - target: {fileID: 5957807632821544747, guid: 318aa1e37b99c6348a4f5e07d6759a40,
         type: 3}
       propertyPath: m_Radius
-      value: 0.05
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 9178637273633828365, guid: 318aa1e37b99c6348a4f5e07d6759a40,
         type: 3}

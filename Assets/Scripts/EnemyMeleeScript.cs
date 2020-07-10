@@ -22,8 +22,7 @@ public class EnemyMeleeScript : MonoBehaviour
 
         if (col.gameObject.tag.Equals("Player"))
         {
-            col.gameObject.GetComponent<PlayerMovementScript>().Hurt(dmg);
-            Debug.Log(col.gameObject.GetComponent<PlayerMovementScript>().hp);
+            col.gameObject.GetComponent<PlayerEssentials>().Hurt(dmg);
 
         }
     }

@@ -19,6 +19,7 @@ public class LevelFinishScript : MonoBehaviour
     {
         if (col.gameObject.tag.Equals("Player"))
         {
+            //GetComponent<AudioSource>().Play();
             GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerScript>().Finish();
             col.gameObject.GetComponent<PlayerMovementScript>().enabled = false;
         }

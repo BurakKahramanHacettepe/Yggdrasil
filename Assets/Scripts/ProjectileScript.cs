@@ -58,7 +58,8 @@ public class ProjectileScript : MonoBehaviour
             {
                 gameController.kill_count += 1;
             }
-            Debug.Log(col.gameObject.GetComponent<EnemyScript>().hp);
+
+            Destroy(gameObject);
 
         }
     }

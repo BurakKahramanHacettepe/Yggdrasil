@@ -12,7 +12,6 @@ public class PlayerMovementScript : MonoBehaviour
 
     public float runSpeed = 40f;
 
-    public float hp = 100f;
 
     float horizontalMove = 0f;
     bool jump = false;
@@ -32,13 +31,25 @@ public class PlayerMovementScript : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            melee = true;
-            animator.SetTrigger("Melee");
+            if (GetComponent<PlayerEssentials>().melee_cd >= 1.0f)
+            {
+                melee = true;
+                animator.SetTrigger("Melee");
+            }
+
         }
         if (Input.GetMouseButtonDown(1))
         {
-            ranged = true;
-            animator.SetTrigger("Ranged");
+            if (GetComponent<PlayerEssentials>().cd>= 1.0f)
+            {
+                ranged = true;
+                animator.SetTrigger("Ranged");
+            }
+            else
+            {
+                GetComponents<AudioSource>()[1].Play();
+            }
+           
 
         }
 
@@ -48,19 +59,7 @@ public class PlayerMovementScript : MonoBehaviour
 
     
 
-    public void Hurt(float dmg)
-    {
-        hp -= dmg;
-        
-        animator.SetFloat("Hp", hp);
-        animator.SetTrigger("Hurt");
-
-        if (hp <= 0)
-        {
-            GetComponent<BoxCollider2D>().enabled = false;
-            GetComponentInChildren<CircleCollider2D>().enabled = false;
-        }
-    }
+   
 
     void FixedUpdate()
     {

@@ -20,6 +20,7 @@ public class PlayerMeleeScript : MonoBehaviour
         if (col.gameObject.tag.Equals("Enemy"))
         {
             bool isDead = col.gameObject.GetComponent<EnemyScript>().Hurt(dmg);
+            GetComponent<AudioSource>().Play();
             if (isDead)
             {
                 gameController.kill_count += 1;

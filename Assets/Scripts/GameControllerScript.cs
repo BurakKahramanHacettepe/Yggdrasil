@@ -9,9 +9,15 @@ public class GameControllerScript : MonoBehaviour
 {
     // Start is called before the first frame update
     public TextMeshProUGUI kill_count_text;
+    public GameObject[] to_disable;
     public int kill_count = 0;
 
     public GameObject player;
+    public GameObject player_stats;
+
+
+
+
 
     public GameObject LVLpanel;
     public int lvl_points;
@@ -30,8 +36,11 @@ public class GameControllerScript : MonoBehaviour
     {
         finish = true;
         target = player.transform.position + new Vector3(1.5f, 0f);
-        Animator animator = player.GetComponent<Animator>();
-        animator.SetTrigger("Finish");
+        player.GetComponent<Animator>().SetTrigger("Finish");
+        foreach (GameObject item in to_disable)
+        {
+            item.SetActive(false);
+        }
         Invoke("LvlUp", 2f);
     }
     void LvlUp()
@@ -48,37 +57,47 @@ public class GameControllerScript : MonoBehaviour
     }
     public void MeleeUpgrade()
     {
-        lvl_points -= 1;
-        lvl_points_text.text = "Level Points : " + lvl_points.ToString();
-        melee.GetComponent<PlayerMeleeScript>().dmg += 25f;
+        if (lvl_points >= 1f)
+        {
+            lvl_points -= 1;
+            lvl_points_text.text = "Level Points : " + lvl_points.ToString();
+            melee.GetComponent<PlayerMeleeScript>().dmg += 25f;
+        }
+        
 
     }
     public void RangedUpgrade()
     {
-        lvl_points -= 1;
-        lvl_points_text.text = "Level Points : " + lvl_points.ToString();
-        ranged.GetComponent<ProjectileScript>().dmg += 20f;
-
+        if (lvl_points >= 1f)
+        {
+            lvl_points -= 1;
+            lvl_points_text.text = "Level Points : " + lvl_points.ToString();
+            ranged.GetComponent<ProjectileScript>().dmg += 20f;
+        }
     }
     public void SpeedUpgrade()
     {
-        lvl_points -= 1;
-        lvl_points_text.text = "Level Points : " + lvl_points.ToString();
-        player.GetComponent<PlayerMovementScript>().runSpeed += 5f;
-
+        if (lvl_points >= 1f)
+        {
+            lvl_points -= 1;
+            lvl_points_text.text = "Level Points : " + lvl_points.ToString();
+            player_stats.GetComponent<PlayerStatsScript>().runSpeed += 5f;
+        }
 
     }
     public void JumpUpgrade()
     {
-        lvl_points -= 1;
-        lvl_points_text.text = "Level Points : " + lvl_points.ToString();
-        player.GetComponent<CharacterController2D>().m_JumpForce += 100f;
-
+        if (lvl_points >= 1f)
+        {
+            lvl_points -= 1;
+            lvl_points_text.text = "Level Points : " + lvl_points.ToString();
+            player_stats.GetComponent<PlayerStatsScript>().jumpForce += 100f;
+        }
     }
     // Update is called once per frame
     void Update()
     {
-        kill_count_text.text = kill_count.ToString();
+        kill_count_text.text = "Score: "+kill_count.ToString();
         if (finish)
         {
             player.transform.position = Vector2.MoveTowards(player.transform.position, target, 0.5f*Time.deltaTime);
